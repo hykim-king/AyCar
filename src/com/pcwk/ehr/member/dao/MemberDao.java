@@ -30,9 +30,8 @@ import com.pcwk.ehr.member.vo.MemberVO;
 import com.pcwk.ehr.service.AdminService;
 
 public class MemberDao implements Cardiv<MemberVO>, PLog {
-	private AdminService adminService;
 	public static final String MEMBER_DATA = ".\\data\\Member.csv";
-	private List<MemberVO> members = new ArrayList<MemberVO>();
+	
 	CarDao car = new CarDao();
 	
 	// 로그인
@@ -64,57 +63,7 @@ public class MemberDao implements Cardiv<MemberVO>, PLog {
 
 	// 파일에서 회원정보 읽기
 	public MemberDao() {
-		car.carDao();
-		getMemberReadFile(MEMBER_DATA);
-	}
 
-	// 회원정보 파일을 읽고 -> List<MemberVO>
-	/**
-	 * 회원정보 파일 to List<MemberVO>
-	 * 
-	 * @param path
-	 * @return
-	 */
-	public List<MemberVO> getMemberReadFile(String path) {
-
-		// 1. file read
-		// 2. 읽은 한줄 -> List<MemberVO>
-		// 3. List<MemberVO> members에 추가
-		try (BufferedReader memberReader = new BufferedReader(new FileReader(path));) {
-			String line;
-			while ((line = memberReader.readLine()) != null) {
-				// System.out.println(line);
-				// pcwk01,이상무01,4321a,yejiad12@gmail.com,0,2025-04-18,일반 to MamberVO
-
-				String[] dataArr = line.split(",");
-
-				String id = dataArr[0];// 회원ID
-				String pw = dataArr[1];// 비밀번호
-				String name = dataArr[2];// 이름
-				String role = dataArr[3];// 권한
-
-				MemberVO memberVO = new MemberVO(id, pw, name, role);
-
-				// System.out.println(memberVO);
-				members.add(memberVO);
-			}
-
-			for (MemberVO vo : members) {
-				System.out.println(vo);
-			}
-
-		} catch (FileNotFoundException e) {
-			System.out.println("FileNotFoundException:" + e.getMessage());
-			e.printStackTrace();
-		} catch (IOException e) {
-			System.out.println("IOException:" + e.getMessage());
-			e.printStackTrace();
-		} catch (Exception e) {
-			System.out.println("Exception:" + e.getMessage());
-			e.printStackTrace();
-		}
-
-		return members;
 	}
 
 	// 등록
@@ -180,39 +129,39 @@ public class MemberDao implements Cardiv<MemberVO>, PLog {
 	}
 
 	@Override
-	public int doUpdate(MemberVO dto) {
-		Scanner sc = new Scanner(System.in);
-		String pw;
-		System.out.println("변경할 비밀번호 : ");
-		pw = sc.nextLine();
-		dto.setPw(pw);
+	public int doUpdate(List<MemberVO> dto) {
+		int flag = 0;
 
-		System.out.println("변경이 완료되었습니다.");
+	    try (BufferedWriter writer = new BufferedWriter(new FileWriter(MEMBER_DATA))) {
+	        for (MemberVO m : dto) {
+	            String line = String.join(",", m.getId(), m.getPw(), m.getName(), m.getRole());
+	            writer.write(line);
+	            writer.newLine();
+	        }
+	        flag = 1;
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
 
-		String next = sc.nextLine();
-		adminService.backMenu();
-		return 0;
+	    return flag;
 	}
 
 	@Override
-	public int doDelete(MemberVO dto) {
-		Scanner sc = new Scanner(System.in);
+	public int doDelete(List<MemberVO> dto) {
+		int flag = 0;
 
-		System.out.println("삭제할 아이디 : ");
-		String id = sc.nextLine();
+	    try (BufferedWriter writer = new BufferedWriter(new FileWriter(MEMBER_DATA))) {
+	        for (MemberVO m : dto) {
+	            String line = String.join(",", m.getId(), m.getPw(), m.getName(), m.getRole());
+	            writer.write(line);
+	            writer.newLine();
+	        }
+	        flag = 1;
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
 
-		for (MemberVO vo : members) {
-
-			if (vo.getId().equals(id)) {
-				members.remove(vo);
-				System.out.println("삭제되었습니다.");
-				break;
-			}
-		}
-
-		String next = sc.nextLine();
-		adminService.backMenu();
-		return 0;
+	    return flag;
 	}
 
 }

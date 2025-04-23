@@ -106,13 +106,13 @@ public class CarDao implements Cardiv<CarVO>, PLog {
 	}
 
 	@Override
-	public int doUpdate(CarVO dto) {
+	public int doUpdate(List<CarVO> dto) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int doDelete(CarVO dto) {
+	public int doDelete(List<CarVO> dto) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

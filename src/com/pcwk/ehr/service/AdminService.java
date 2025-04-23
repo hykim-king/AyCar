@@ -79,10 +79,10 @@ public class AdminService {
 				showSingleMember();
 				break;
 			case 3:
-				System.out.println("※ 회원 수정은 아직 구현되지 않았습니다.");
+				updateMember();
 				break;
 			case 4:
-				System.out.println("※ 회원 삭제는 아직 구현되지 않았습니다.");
+				deleteMember();
 				break;
 			case 5:
 				System.out.println("이전 메뉴로 돌아갑니다.");
@@ -133,6 +133,61 @@ public class AdminService {
 		backMenu();
 		
 		s.close();
+	}
+	public void updateMember() {
+	    Scanner sc = new Scanner(System.in);
+	    
+	    System.out.print("비밀번호를 변경할 회원 ID를 입력하세요: ");
+	    String id = sc.nextLine();
+
+	    List<MemberVO> memberList = dao.doRetrieve(null);
+	    
+	    boolean found = false;
+	    
+	    for (MemberVO m : memberList) {
+	        if (m.getId().equals(id)) {
+	            System.out.print("새 비밀번호 입력: ");
+	            String newPw = sc.nextLine();
+
+	            m.setPw(newPw); // 비밀번호 변경
+	            found = true;
+	            break;
+	        }
+	    }
+	    
+	    if (found) {
+	        dao.doUpdate(memberList); // 변경 내용 전체 저장
+	        System.out.println("비밀번호가 성공적으로 변경되었습니다.");
+	    } else {
+	        System.out.println("해당 ID의 회원을 찾을 수 없습니다.");
+	    }
+	}
+	
+	public void deleteMember() {
+		Scanner sc = new Scanner(System.in);
+
+	    System.out.print("삭제할 아이디 : ");
+	    String id = sc.nextLine();
+
+	    // 1. 현재 회원 목록 조회
+	    List<MemberVO> memberList = dao.doRetrieve(null);
+	    boolean found = false;
+
+	    // 2. 삭제 대상 회원 제거
+	    for (int i = 0; i < memberList.size(); i++) {
+	        if (memberList.get(i).getId().equals(id)) {
+	            memberList.remove(i);
+	            found = true;
+	            break;
+	        }
+	    }
+	    // 3. 회원 목록 저장
+	    if (found) {
+	        dao.doDelete(memberList); // 변경 내용 전체 저장
+	        System.out.println("회원을 성공적으로 삭제 했습니다.");
+	    } else {
+	        System.out.println("회원 삭제를 실패했습니다.");
+	    }
 	}
 
 }

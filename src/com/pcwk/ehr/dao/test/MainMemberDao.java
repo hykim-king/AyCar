@@ -32,8 +32,6 @@ public class MainMemberDao {
 		System.out.print("이름 입력: ");
 		String name = s.nextLine();
 
-		s.close();
-
 		return new MemberVO(id, pw, name, "일반");
 	}
 

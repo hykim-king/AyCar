@@ -48,13 +48,13 @@ public interface Cardiv<T> {
 	 * @param dto
 	 * @return 0(실패)/1(성공)
 	 */
-	int doUpdate(T dto);
+	int doUpdate(List<T> dto);
 
 	/**
 	 * 회원 정보 삭제
 	 * @param dto
 	 * @return
 	 */
-	int doDelete(T dto);
+	int doDelete(List<T> dto);
 
 }
