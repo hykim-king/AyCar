@@ -189,6 +189,7 @@ public class MemberDao implements Cardiv<MemberVO>, PLog {
 
 		System.out.println("변경이 완료되었습니다.");
 
+		String next = sc.nextLine();
 		adminService.backMenu();
 		return 0;
 	}
@@ -210,6 +211,7 @@ public class MemberDao implements Cardiv<MemberVO>, PLog {
 		}
 
 		String next = sc.nextLine();
+		adminService.backMenu();
 		return 0;
 	}
 
