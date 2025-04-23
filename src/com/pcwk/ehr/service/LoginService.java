@@ -23,11 +23,14 @@ public class LoginService {
 	private MemberDao dao;
 	private MemberVO loggedInUser;
 	private AdminService adminService;
+	private UserService userService;
+
 	boolean run = true;
 
 	public LoginService(MemberDao dao) {
 		this.dao = dao; // DAO 생성
-		this.adminService = new AdminService(dao);
+		this.adminService = new AdminService(dao, this);
+		this.userService = new UserService(this);
 	}
 
 	/**
@@ -54,21 +57,25 @@ public class LoginService {
 			System.out.println("╚════════════════════════════════════════╝");
 			System.out.print("▶ 번호를 선택하세요: ");
 
-			int select = Integer.parseInt(s.nextLine());
-
-			switch (select) {
-			case 1:
-				signUp();
-				break;
-			case 2:
-				login();
-				break;
-			case 3:
-				System.out.println("프로그램을 종료합니다.");
-				System.exit(0); // 프로그램 종료
-				break;
-			default:
-				System.out.println("잘못된 입력입니다. 다시 입력 해주세요");
+			try {
+				int select = Integer.parseInt(s.nextLine());
+				switch (select) {
+				case 1:
+					signUp();
+					break;
+				case 2:
+					login();
+					break;
+				case 3:
+					System.out.println("프로그램을 종료합니다.");
+					System.exit(0); // 프로그램 종료
+					break;
+				default:
+					System.out.println("잘못된 입력입니다. 다시 입력 해주세요");
+				}
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+				System.out.println("잘못된 입력입니다. 숫자만 입력 해주세요.");
 			}
 		}
 	}
@@ -130,9 +137,22 @@ public class LoginService {
 
 			if ("관리자".equals(loggedInUser.getRole())) {
 				adminService.adminMenu();
+			} else if ("일반".equals(loggedInUser.getRole())) {
+				userService.UserStart();
 			}
 		} else {
 			System.out.println("로그인 실패!");
+		}
+	}
+
+	// 로그 아웃
+	public void logout() {
+		if (this.loggedInUser != null) {
+			System.out.println(this.loggedInUser.getName() + "님, 로그아웃 되었습니다.");
+			this.dao.logOut();
+			this.loggedInUser = null;
+		} else {
+			System.out.println("로그인 상태가 아닙니다.");
 		}
 	}
 
