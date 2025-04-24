@@ -13,10 +13,18 @@
  */
 package com.pcwk.ehr.service;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.List;
 import java.util.Scanner;
+
+import com.pcwk.ehr.car.dao.CarDao;
+import com.pcwk.ehr.car.vo.CarVO;
 
 public class UserService {
 	private LoginService loginService;
+	CarDao carDao = new CarDao();
 
 	Scanner s = new Scanner(System.in);
 
@@ -43,7 +51,7 @@ public class UserService {
 				System.out.println("차량조회");
 				break;
 			case 2:
-				System.out.println("차량 예약");
+				carReserve();
 				break;
 			case 3:
 				System.out.println("차량 비교");
@@ -61,5 +69,36 @@ public class UserService {
 		}
 
 	}
+	
+	
+	//차량 예약
+	public void carReserve() {
+		Scanner sc = new Scanner(System.in);
+
+		System.out.println("예약할 차량 번호 : ");
+		String carNo = sc.nextLine();
+
+		// 차량 정보 조회
+		List<CarVO> carList = carDao.doRetrieve(null);
+
+		boolean found = false;
+
+		for (CarVO car : carList) {
+			if (car.getCarNo().equals(carNo)) {
+				car.setReserve(true);
+				found = true;
+				break;
+			}
+		}
+
+		if (found) {
+			carDao.reserve(carList); // 예약 내용 전체 저장
+			System.out.println("예약이 완료 되었습니다.");
+		} else {
+			System.out.println("차량 정보가 없습니다.");
+		}
+
+	}
+
 
 }

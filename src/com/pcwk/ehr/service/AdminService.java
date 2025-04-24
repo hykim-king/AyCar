@@ -16,12 +16,15 @@ package com.pcwk.ehr.service;
 import java.util.List;
 import java.util.Scanner;
 
+import com.pcwk.ehr.car.dao.CarDao;
+import com.pcwk.ehr.car.vo.CarVO;
 import com.pcwk.ehr.member.dao.MemberDao;
 import com.pcwk.ehr.member.vo.MemberVO;
 
 public class AdminService {
 	private LoginService loginService;
 	private MemberDao dao;
+	private CarDao carDao = new CarDao();
 
 	/**
 	 * @param dao
@@ -68,11 +71,13 @@ public class AdminService {
 			System.out.println("╔════════════════════════════════════════╗");
 			System.out.println("║         관리자 메뉴 (Admin Mode)   	 ║");
 			System.out.println("╠════════════════════════════════════════╣");
-			System.out.println("║  1. 회원 전체 조회                         ║");
-			System.out.println("║  2. 회원 단건 조회                         ║");
+			System.out.println("║  1. 회원 전체 조회                        	 ║");
+			System.out.println("║  2. 회원 단건 조회                        	 ║");
 			System.out.println("║  3. 회원 수정                         	 ║");
 			System.out.println("║  4. 회원 삭제                           	 ║");
-			System.out.println("║  5. 로그아웃 / 이전 메뉴                  	 ║");
+			System.out.println("║  5. 예약 차량 조회                        	 ║");
+			System.out.println("║  6. 차량 예약 취소                        	 ║");
+			System.out.println("║  7. 로그아웃 / 이전 메뉴                  	 ║");
 			System.out.println("╚════════════════════════════════════════╝");
 			System.out.print("▶ 번호를 선택하세요: ");
 
@@ -93,6 +98,12 @@ public class AdminService {
 					deleteMember();
 					break;
 				case 5:
+					carReserveCheck();
+					break;
+				case 6:
+					carReserveCancel();
+					break;
+				case 7:
 					loginService.logout();
 					System.out.println("로그 아웃하고 이전 메뉴로 돌아갑니다.");
 					return;
@@ -199,6 +210,47 @@ public class AdminService {
 			System.out.println("회원을 성공적으로 삭제 했습니다.");
 		} else {
 			System.out.println("회원 삭제를 실패했습니다.");
+		}
+	}
+	
+	//예약 차량 조회
+	public void carReserveCheck() {
+		List<CarVO> carList = carDao.doRetrieve(null);
+		for (CarVO vo : carList) {
+			if (vo.getReserve() == true) {
+				System.out.println(vo);
+			}
+
+		}
+		backMenu();
+	}
+	
+	
+	//차량 예약 취소
+	public void carReserveCancel() {
+		Scanner sc = new Scanner(System.in);
+
+		System.out.println("예약 취소할 차량 번호 : ");
+		String carNo = sc.nextLine();
+
+		// 차량 정보 조회
+		List<CarVO> carList = carDao.doRetrieve(null);
+
+		boolean found = false;
+
+		for (CarVO car : carList) {
+			if (car.getCarNo().equals(carNo)&&car.getReserve() == true) {
+				car.setReserve(false);
+				found = true;
+				break;
+			}
+		}
+
+		if (found) {
+			carDao.carReserveCancel(carList); // 예약 내용 전체 저장
+			System.out.println("예약 취소가 완료 되었습니다.");
+		} else {
+			System.out.println("예약된 차량이 아닙니다.");
 		}
 	}
 

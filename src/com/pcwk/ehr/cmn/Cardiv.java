@@ -41,7 +41,7 @@ public interface Cardiv<T> {
 	 * @param dto
 	 * @return List<MemberVO>
 	 */
-	List<MemberVO> doRetrieve(T dto);
+	List<T> doRetrieve(T dto);
 
 	/**
 	 * 회원 정보 수정

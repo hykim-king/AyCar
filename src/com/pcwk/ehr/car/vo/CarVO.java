@@ -126,7 +126,7 @@ public class CarVO extends DTO {
 		this.distance = distance;
 	}
 
-	public boolean isReserve() {
+	public boolean getReserve() {
 		return reserve;
 	}
 
