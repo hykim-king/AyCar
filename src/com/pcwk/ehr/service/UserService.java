@@ -13,10 +13,12 @@
  */
 package com.pcwk.ehr.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import com.pcwk.ehr.car.dao.CarDao;
+import com.pcwk.ehr.car.vo.CarVO;
 import com.pcwk.ehr.car.vo.CarVO;
 
 public class UserService {
@@ -46,6 +48,7 @@ public class UserService {
 
 				switch (select) {
 				case 1:
+					carCheck();
 					checkMenu();
 					break;
 				case 2:
@@ -89,7 +92,12 @@ public class UserService {
 
 				switch (select) {
 				case 1:
-					System.out.println("브랜드");
+					String brand ="";
+					
+					System.out.println("조회할 브랜드를 입력해 주세요");
+					brand = s.nextLine();
+					
+					brandCheck(brand);
 					break;
 				case 2:
 					System.out.println("가격");
@@ -140,5 +148,85 @@ public class UserService {
 
 	}
 
+	// 1. 전체 차량 출력
+	public void carCheck() {
+		System.out.println("📋 전체 차량 목록:");
+		System.out.printf("%-6s %-13s %-8s %-8s %-8s %-12s %-8s %-8s %-10s %-8s%n", "브랜드", "모델명", "차종", "가격", "색상",
+				"차량번호", "연료", "연식", "주행거리", "예약여부");
+		System.out.println(
+				"-------------------------------------------------------------------------------------------------------");
+		List<CarVO> carList = carDao.doRetrieve(null);
+		for (CarVO car : carList) {
+			String reserveStatus = car.getReserve() ? "예약" : "";
+			System.out.printf("%-8s %-10s %-10s %-8d %-8s %-10s %-10s %-12d %-10d %-8s%n", car.getBrand(),
+					car.getModel(), car.getSize(), car.getPrice(), car.getColor(), car.getCarNo(), car.getFuel(),
+					car.getModelYear(), car.getDistance(), car.getReserve());
+		}
+	}
+
+	// 2. 제조사별 차량 조회
+	public void brandCheck(String brand) {
+		List<CarVO> carList = carDao.doRetrieve(null);
+		System.out.println("🚗 제조사 [" + brand + "] 차량 목록:");
+		System.out.printf("%-6s %-10s %-8s %-6s %-8s %-10s %-8s %-8s %-8s %-8s%n", "브랜드", "모델명", "차종", "가격", "색상",
+				"차량번호", "연료", "연식", "주행거리", "예약여부");
+		System.out.println(
+				"----------------------------------------------------------------------------------------------------");
+		for (CarVO car : carList) {
+			if (car.getBrand().equalsIgnoreCase(brand)) {
+				
+				System.out.printf("%-8s %-10s %-10s %-8d %-8s %-10s %-10s %-8d %-10d %-8b%n", car.getBrand(),
+						car.getModel(), car.getSize(), car.getPrice(), car.getColor(), car.getCarNo(), car.getFuel(),
+						car.getModelYear(), car.getDistance(), car.getReserve());
+				
+			}
+		}
+
+		
+	}
+
+	// 3. 가격대별 차량 조회
+	public void priceCheck(int maxPrice) {
+		List<CarVO> carList = carDao.doRetrieve(null);
+		for (CarVO car : carList) {
+			if (car.getPrice() <= maxPrice) {
+				carList.add(car);
+			}
+		}
+
+		System.out.println("💰 " + maxPrice + "만원 이하 차량 목록:");
+		System.out.printf("%-6s %-10s %-8s %-6s %-8s %-10s %-8s %-8s %-8s %-8s%n", "브랜드", "모델명", "차종", "가격", "색상",
+				"차량번호", "연료", "연식", "주행거리", "예약여부");
+		System.out.println(
+				"----------------------------------------------------------------------------------------------------");
+
+		for (CarVO car : carList) {
+			System.out.printf("%-8s %-10s %-10s %-8d %-8s %-10s %-10s %-8d %-10d %-8b%n", car.getBrand(),
+					car.getModel(), car.getSize(), car.getPrice(), car.getColor(), car.getCarNo(), car.getFuel(),
+					car.getModelYear(), car.getDistance(), car.getReserve());
+		}
+	}
+
+	// 4. 차종(사이즈)별 차량 조회
+	public void shapeCheck(String size) {
+		List<CarVO> carList = carDao.doRetrieve(null);
+		for (CarVO car : carList) {
+			if (car.getSize().equalsIgnoreCase(size)) {
+				carList.add(car);
+			}
+		}
+
+		System.out.println("🚙 차종 [" + size + "] 차량 목록:");
+		System.out.printf("%-6s %-10s %-8s %-6s %-8s %-10s %-8s %-8s %-8s %-8s%n", "브랜드", "모델명", "차종", "가격", "색상",
+				"차량번호", "연료", "연식", "주행거리", "예약여부");
+		System.out.println(
+				"----------------------------------------------------------------------------------------------------");
+
+		for (CarVO car : carList) {
+			System.out.printf("%-8s %-7s %-9s %-8d %-8s %-10s %-10s %-11d %-8d %-8b%n", car.getBrand(),
+					car.getModel(), car.getSize(), car.getPrice(), car.getColor(), car.getCarNo(), car.getFuel(),
+					car.getModelYear(), car.getDistance(), car.getReserve());
+		}
+	}
 
 }
