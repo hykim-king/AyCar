@@ -242,6 +242,7 @@ public class AdminService {
 					car.getModel(), car.getSize(), car.getPrice(), car.getColor(), car.getCarNo(), car.getFuel(),
 					car.getModelYear(), car.getDistance(), car.getReserve());
 		}
+		backMenu();
 	}
 	
 
