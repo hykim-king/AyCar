@@ -49,11 +49,6 @@ public class MemberDao implements Cardiv<MemberVO>, PLog {
 		return null;
 	}
 
-	// 로그아웃
-	public void logOut() {
-
-	}
-
 	// 회원가입
 	public int signUp(MemberVO input) {
 		int result = doSave(input); // 회원 등록

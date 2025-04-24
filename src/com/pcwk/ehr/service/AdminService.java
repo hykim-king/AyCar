@@ -71,12 +71,12 @@ public class AdminService {
 			System.out.println("╔════════════════════════════════════════╗");
 			System.out.println("║         관리자 메뉴 (Admin Mode)   	 ║");
 			System.out.println("╠════════════════════════════════════════╣");
-			System.out.println("║  1. 회원 전체 조회                        	 ║");
-			System.out.println("║  2. 회원 단건 조회                        	 ║");
+			System.out.println("║  1. 회원 전체 조회                    	 ║");
+			System.out.println("║  1. 회원 단건 조회                    	 ║");
 			System.out.println("║  3. 회원 수정                         	 ║");
 			System.out.println("║  4. 회원 삭제                           	 ║");
-			System.out.println("║  5. 예약 차량 조회                        	 ║");
-			System.out.println("║  6. 차량 예약 취소                        	 ║");
+			System.out.println("║  5. 예약 차량 조회                    	 ║");
+			System.out.println("║  6. 차량 예약 취소                    	 ║");
 			System.out.println("║  7. 로그아웃 / 이전 메뉴                  	 ║");
 			System.out.println("╚════════════════════════════════════════╝");
 			System.out.print("▶ 번호를 선택하세요: ");

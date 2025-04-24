@@ -149,7 +149,6 @@ public class LoginService {
 	public void logout() {
 		if (this.loggedInUser != null) {
 			System.out.println(this.loggedInUser.getName() + "님, 로그아웃 되었습니다.");
-			this.dao.logOut();
 			this.loggedInUser = null;
 		} else {
 			System.out.println("로그인 상태가 아닙니다.");
