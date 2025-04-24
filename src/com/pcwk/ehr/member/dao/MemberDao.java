@@ -40,7 +40,7 @@ public class MemberDao implements Cardiv<MemberVO>, PLog {
 
 		for (MemberVO member : memberList) {
 			if (member.getId().equals(id) && member.getPw().equals(pw)) {
-				System.out.println("로그인 성공! 환영합니다 \u263A " + member.getName() + "님.");
+				LOG.debug("로그인 성공! 환영합니다 \u263A " + member.getName() + "님.");
 				return member;
 			}
 		}
