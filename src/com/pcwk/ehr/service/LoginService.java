@@ -16,6 +16,9 @@ package com.pcwk.ehr.service;
 import java.util.List;
 import java.util.Scanner;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.pcwk.ehr.member.dao.MemberDao;
 import com.pcwk.ehr.member.vo.MemberVO;
 
@@ -24,6 +27,7 @@ public class LoginService {
 	private MemberVO loggedInUser;
 	private AdminService adminService;
 	private UserService userService;
+	Logger LOG = LogManager.getLogger();
 
 	boolean run = true;
 
@@ -48,13 +52,13 @@ public class LoginService {
 	public void loginMenu() {
 		Scanner s = new Scanner(System.in);
 		while (run) {
-			System.out.println("╔════════════════════════════════════════╗");
-			System.out.println("║                AyCar \uD83D\uDE97     	 	 ║");
-			System.out.println("╠════════════════════════════════════════╣");
-			System.out.println("║  1. 회원가입                  		 ║");
-			System.out.println("║  2. 로그인	                   	 ║");
-			System.out.println("║  3. 종료	                   	 ║");
-			System.out.println("╚════════════════════════════════════════╝");
+			LOG.debug("╔════════════════════════════════════════╗");
+			LOG.debug("║                AyCar \uD83D\uDE97     	 	 ║");
+			LOG.debug("╠════════════════════════════════════════╣");
+			LOG.debug("║  1. 회원가입                  		 ║");
+			LOG.debug("║  2. 로그인	                   	 ║");
+			LOG.debug("║  3. 종료	                   	 ║");
+			LOG.debug("╚════════════════════════════════════════╝");
 			System.out.print("▶ 번호를 선택하세요: ");
 
 			try {
@@ -67,15 +71,15 @@ public class LoginService {
 					login();
 					break;
 				case 3:
-					System.out.println("프로그램을 종료합니다.");
+					LOG.debug("프로그램을 종료합니다.");
 					System.exit(0); // 프로그램 종료
 					break;
 				default:
-					System.out.println("잘못된 입력입니다. 다시 입력 해주세요");
+					LOG.debug("잘못된 입력입니다. 다시 입력 해주세요");
 				}
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
-				System.out.println("잘못된 입력입니다. 숫자만 입력 해주세요.");
+				LOG.debug("잘못된 입력입니다. 숫자만 입력 해주세요.");
 			}
 		}
 	}
@@ -98,9 +102,9 @@ public class LoginService {
 		int result = dao.signUp(newMember); // Dao 안 signUP 호출
 
 		if (result == 1) {
-			System.out.println("회원가입 성공!");
+			LOG.debug("회원가입 성공!");
 		} else {
-			System.out.println("회원가입 실패!");
+			LOG.debug("회원가입 실패!");
 		}
 
 		while (true) {
@@ -111,10 +115,10 @@ public class LoginService {
 				login(); // 로그인 흐름으로 이동
 				break;
 			} else if ("N".equals(answer)) {
-				System.out.println("프로그램을 종료합니다.");
+				LOG.debug("프로그램을 종료합니다.");
 				System.exit(0); // 프로그램 강제 종료
 			} else {
-				System.out.println("잘못된 입력입니다. 다시 입력해주세요.");
+				LOG.debug("잘못된 입력입니다. 다시 입력해주세요.");
 			}
 		}
 	}
@@ -133,7 +137,7 @@ public class LoginService {
 
 		if (user != null) {
 			loggedInUser = user; // 로그인 성공 → 저장
-			System.out.println("로그인 성공! " + user.getName() + "님 환영합니다.");
+			LOG.debug("로그인 성공! " + user.getName() + "님 환영합니다.");
 
 			if ("관리자".equals(loggedInUser.getRole())) {
 				adminService.adminMenu();
@@ -141,36 +145,36 @@ public class LoginService {
 				userService.UserStart();
 			}
 		} else {
-			System.out.println("로그인 실패!");
+			LOG.debug("로그인 실패!");
 		}
 	}
 
 	// 로그 아웃
 	public void logout() {
 		if (this.loggedInUser != null) {
-			System.out.println(this.loggedInUser.getName() + "님, 로그아웃 되었습니다.");
+			LOG.debug(this.loggedInUser.getName() + "님, 로그아웃 되었습니다.");
 			this.loggedInUser = null;
 		} else {
-			System.out.println("로그인 상태가 아닙니다.");
+			LOG.debug("로그인 상태가 아닙니다.");
 		}
 	}
 
 	// 전체 조회
 	public void showAllMembers() {
 		if (loggedInUser == null) {
-			System.out.println("먼저 로그인 해주세요.");
+			LOG.debug("먼저 로그인 해주세요.");
 			return;
 		}
 
 		if (!"관리자".equals(loggedInUser.getRole())) {
-			System.out.println("권한이 없습니다. 관리자만 접근 가능합니다.");
+			LOG.debug("권한이 없습니다. 관리자만 접근 가능합니다.");
 			return;
 		}
 
 		List<MemberVO> memberList = dao.doRetrieve(null);
-		System.out.println("====== 회원 목록 ======");
+		LOG.debug("====== 회원 목록 ======");
 		for (MemberVO member : memberList) {
-			System.out.println("ID: " + member.getId() + ", 이름: " + member.getName() + ", 권한: " + member.getRole());
+			LOG.debug("ID: " + member.getId() + ", 이름: " + member.getName() + ", 권한: " + member.getRole());
 		}
 	}
 }

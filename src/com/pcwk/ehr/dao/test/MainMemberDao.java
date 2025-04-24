@@ -15,21 +15,26 @@ package com.pcwk.ehr.dao.test;
 
 import java.util.Scanner;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.pcwk.ehr.member.dao.MemberDao;
 import com.pcwk.ehr.member.vo.MemberVO;
 import com.pcwk.ehr.service.LoginService;
 
 public class MainMemberDao {
+	
 	public static MemberVO inputMember() {
+		Logger LOG = LogManager.getLogger();
 		Scanner s = new Scanner(System.in);
 
-		System.out.print("ID 입력: ");
+		LOG.debug("ID 입력: ");
 		String id = s.nextLine();
 
-		System.out.print("PW 입력: ");
+		LOG.debug("PW 입력: ");
 		String pw = s.nextLine();
 
-		System.out.print("이름 입력: ");
+		LOG.debug("이름 입력: ");
 		String name = s.nextLine();
 
 		return new MemberVO(id, pw, name, "일반");

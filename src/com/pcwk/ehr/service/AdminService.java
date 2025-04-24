@@ -16,6 +16,9 @@ package com.pcwk.ehr.service;
 import java.util.List;
 import java.util.Scanner;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.pcwk.ehr.car.dao.CarDao;
 import com.pcwk.ehr.car.vo.CarVO;
 import com.pcwk.ehr.member.dao.MemberDao;
@@ -25,6 +28,7 @@ public class AdminService {
 	private LoginService loginService;
 	private MemberDao dao;
 	private CarDao carDao = new CarDao();
+	Logger LOG = LogManager.getLogger();
 
 	/**
 	 * @param dao
@@ -39,8 +43,8 @@ public class AdminService {
 		Scanner s = new Scanner(System.in);
 
 		while (true) {
-			System.out.println("▶ 1. 뒤로가기");
-			System.out.println("▶ 2. 종료");
+			LOG.debug("▶ 1. 뒤로가기");
+			LOG.debug("▶ 2. 종료");
 
 			try {
 				int select = Integer.parseInt(s.nextLine());
@@ -52,11 +56,11 @@ public class AdminService {
 					System.exit(0);
 					break;
 				default:
-					System.out.println("잘못된 입력입니다. 다시 선택해주세요.");
+					LOG.debug("잘못된 입력입니다. 다시 선택해주세요.");
 				}
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
-				System.out.println("잘못된 입력입니다. 숫자만 입력 해주세요.");
+				LOG.debug("잘못된 입력입니다. 숫자만 입력 해주세요.");
 			}
 
 		}
@@ -67,19 +71,22 @@ public class AdminService {
 		Scanner s = new Scanner(System.in);
 
 		while (true) {
-			System.out.println();
-			System.out.println("╔════════════════════════════════════════╗");
-			System.out.println("║         관리자 메뉴 (Admin Mode)   	 ║");
-			System.out.println("╠════════════════════════════════════════╣");
-			System.out.println("║  1. 회원 전체 조회                    	 ║");
-			System.out.println("║  1. 회원 단건 조회                    	 ║");
-			System.out.println("║  3. 회원 수정                         	 ║");
-			System.out.println("║  4. 회원 삭제                           	 ║");
-			System.out.println("║  5. 예약 차량 조회                    	 ║");
-			System.out.println("║  6. 차량 예약 취소                    	 ║");
-			System.out.println("║  7. 로그아웃 / 이전 메뉴                  	 ║");
-			System.out.println("╚════════════════════════════════════════╝");
-			System.out.print("▶ 번호를 선택하세요: ");
+			LOG.debug("");
+			LOG.debug("╔════════════════════════════════════════╗");
+			LOG.debug("║         관리자 메뉴 (Admin Mode)   	 ║");
+			LOG.debug("╠════════════════════════════════════════╣");
+			LOG.debug("║  1. 회원 전체 조회                    	 ║");
+			LOG.debug("║  2. 회원 단건 조회                    	 ║");
+			LOG.debug("║  3. 회원 수정                         	 ║");
+			LOG.debug("║  4. 회원 삭제                           	 ║");
+			LOG.debug("║  5. 예약 차량 조회                    	 ║");
+			LOG.debug("║  6. 차량 예약 취소                    	 ║");
+			LOG.debug("║  7. 차량 정보 수정                        	 ║");
+			LOG.debug("║  8. 차량 정보 삭제                        	 ║");
+			LOG.debug("║  9. 차량 정보 비교                        	 ║");
+			LOG.debug("║  10. 로그아웃 / 이전 메뉴                  	 ║");
+			LOG.debug("╚════════════════════════════════════════╝");
+			LOG.debug("▶ 번호를 선택하세요: ");
 
 			try {
 				int select = Integer.parseInt(s.nextLine());
@@ -104,15 +111,24 @@ public class AdminService {
 					carReserveCancel();
 					break;
 				case 7:
+					carUpdate();
+					break;
+				case 8:
+					carDelete();
+					break;
+				case 9:
+					carCompare();
+					break;
+				case 10:
 					loginService.logout();
-					System.out.println("로그 아웃하고 이전 메뉴로 돌아갑니다.");
+					LOG.debug("로그 아웃하고 이전 메뉴로 돌아갑니다.");
 					return;
 				default:
-					System.out.println("잘못된 입력입니다. 다시 선택해주세요.");
+					LOG.debug("잘못된 입력입니다. 다시 선택해주세요.");
 				}
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
-				System.out.println("잘못된 입력입니다. 숫자만 입력 해주세요.");
+				LOG.debug("잘못된 입력입니다. 숫자만 입력 해주세요.");
 			}
 		}
 	}
@@ -121,18 +137,18 @@ public class AdminService {
 	public void showAllMembers() {
 		List<MemberVO> members = dao.doRetrieve(null);
 
-		System.out.println("\n====== 회원 전체 목록 ======");
+		LOG.debug("\n====== 회원 전체 목록 ======");
 		for (MemberVO member : members) {
-			System.out.println("ID: " + member.getId() + ", 이름: " + member.getName() + ", 권한: " + member.getRole());
+			LOG.debug("ID: " + member.getId() + ", 이름: " + member.getName() + ", 권한: " + member.getRole());
 		}
-		System.out.println("===========================");
+		LOG.debug("===========================");
 
 		backMenu();
 	}
 
 	public void showSingleMember() {
 		Scanner s = new Scanner(System.in);
-		System.out.print("조회할 회원의 ID를 입력하세요: ");
+		LOG.debug("조회할 회원의 ID를 입력하세요: ");
 		String inputId = s.nextLine();
 
 		List<MemberVO> memberList = dao.doRetrieve(null); // 전체 조회
@@ -146,12 +162,12 @@ public class AdminService {
 		}
 
 		if (foundMember != null) {
-			System.out.println("===== 회원 정보 =====");
-			System.out.println("ID: " + foundMember.getId());
-			System.out.println("이름: " + foundMember.getName());
-			System.out.println("권한: " + foundMember.getRole());
+			LOG.debug("===== 회원 정보 =====");
+			LOG.debug("ID: " + foundMember.getId());
+			LOG.debug("이름: " + foundMember.getName());
+			LOG.debug("권한: " + foundMember.getRole());
 		} else {
-			System.out.println("해당 ID를 가진 회원이 존재하지 않습니다.");
+			LOG.debug("해당 ID를 가진 회원이 존재하지 않습니다.");
 		}
 		backMenu();
 
@@ -160,7 +176,7 @@ public class AdminService {
 	public void updateMember() {
 		Scanner sc = new Scanner(System.in);
 
-		System.out.print("비밀번호를 변경할 회원 ID를 입력하세요: ");
+		LOG.debug("비밀번호를 변경할 회원 ID를 입력하세요: ");
 		String id = sc.nextLine();
 
 		List<MemberVO> memberList = dao.doRetrieve(null);
@@ -169,7 +185,7 @@ public class AdminService {
 
 		for (MemberVO m : memberList) {
 			if (m.getId().equals(id)) {
-				System.out.print("새 비밀번호 입력: ");
+				LOG.debug("새 비밀번호 입력: ");
 				String newPw = sc.nextLine();
 
 				m.setPw(newPw); // 비밀번호 변경
@@ -180,16 +196,16 @@ public class AdminService {
 
 		if (found) {
 			dao.doUpdate(memberList); // 변경 내용 전체 저장
-			System.out.println("비밀번호가 성공적으로 변경되었습니다.");
+			LOG.debug("비밀번호가 성공적으로 변경되었습니다.");
 		} else {
-			System.out.println("해당 ID의 회원을 찾을 수 없습니다.");
+			LOG.debug("해당 ID의 회원을 찾을 수 없습니다.");
 		}
 	}
 
 	public void deleteMember() {
 		Scanner sc = new Scanner(System.in);
 
-		System.out.print("삭제할 아이디 : ");
+		LOG.debug("삭제할 아이디 : ");
 		String id = sc.nextLine();
 
 		// 1. 현재 회원 목록 조회
@@ -207,30 +223,33 @@ public class AdminService {
 		// 3. 회원 목록 저장
 		if (found) {
 			dao.doDelete(memberList); // 변경 내용 전체 저장
-			System.out.println("회원을 성공적으로 삭제 했습니다.");
+			LOG.debug("회원을 성공적으로 삭제 했습니다.");
 		} else {
-			System.out.println("회원 삭제를 실패했습니다.");
+			LOG.debug("회원 삭제를 실패했습니다.");
 		}
 	}
-	
-	//예약 차량 조회
+
+	// 예약 차량 조회
 	public void carReserveCheck() {
 		List<CarVO> carList = carDao.doRetrieve(null);
-		for (CarVO vo : carList) {
-			if (vo.getReserve() == true) {
-				System.out.println(vo);
+		System.out.printf("%-6s %-13s %-8s %-8s %-8s %-12s %-8s %-8s %-10s %-8s%n", "브랜드", "모델명", "차종", "가격", "색상",
+				"차량번호", "연료", "연식", "주행거리", "예약여부");
+		for (CarVO car : carList) {
+			if (car.getReserve() == true) {
+				System.out.printf("%-8s %-10s %-10s %-8d %-8s %-10s %-10s %-12d %-10d %-8s%n", car.getBrand(),
+						car.getModel(), car.getSize(), car.getPrice(), car.getColor(), car.getCarNo(), car.getFuel(),
+						car.getModelYear(), car.getDistance(), car.getReserve() ?  "예약" : "");
 			}
 
 		}
 		backMenu();
 	}
-	
-	
-	//차량 예약 취소
+
+	// 차량 예약 취소
 	public void carReserveCancel() {
 		Scanner sc = new Scanner(System.in);
 
-		System.out.println("예약 취소할 차량 번호 : ");
+		LOG.debug("예약 취소할 차량 번호 : ");
 		String carNo = sc.nextLine();
 
 		// 차량 정보 조회
@@ -239,7 +258,7 @@ public class AdminService {
 		boolean found = false;
 
 		for (CarVO car : carList) {
-			if (car.getCarNo().equals(carNo)&&car.getReserve() == true) {
+			if (car.getCarNo().equals(carNo) && car.getReserve() == true) {
 				car.setReserve(false);
 				found = true;
 				break;
@@ -248,10 +267,93 @@ public class AdminService {
 
 		if (found) {
 			carDao.carReserveCancel(carList); // 예약 내용 전체 저장
-			System.out.println("예약 취소가 완료 되었습니다.");
+			LOG.debug("예약 취소가 완료 되었습니다.");
 		} else {
-			System.out.println("예약된 차량이 아닙니다.");
+			LOG.debug("예약된 차량이 아닙니다.");
 		}
+	}
+
+	// 차량 정보 삭제
+	public void carDelete() {
+		Scanner c = new Scanner(System.in);
+
+		LOG.debug("삭제할 차량 번호(carNo)를 입력하세요.");
+		String carNo = c.nextLine();
+
+		List<CarVO> carList = carDao.doRetrieve(null);
+
+		boolean found = false;
+
+		for (CarVO car : carList) {
+			if (car.getCarNo().equals(carNo) == true) {
+				found = true;
+				carList.remove(car);
+				break;
+			}
+		}
+
+		if (found) {
+			carDao.doDelete(carList);
+			LOG.debug("차량 삭제 되었습니다.");
+		} else {
+			LOG.debug("해당 차량이 존재하지 않습니다.");
+		}
+	}
+
+	// 차량 정보 수정
+	public void carUpdate() {
+		Scanner s = new Scanner(System.in);
+		LOG.debug("수정할 차량 번호를 입력하세요.");
+		String carNo = s.nextLine();
+		List<CarVO> carList = carDao.doRetrieve(null);
+		boolean found = false;
+
+		for (CarVO car : carList) {
+			if (car.getCarNo().equals(carNo) == true) {
+				LOG.debug("수정할 금액을 입력하세요.");
+				int rePrice = s.nextInt();
+				car.setPrice(rePrice);
+				found = true;
+				break;
+			}
+		}
+		if (found) {
+			carDao.doUpdate(carList);
+			LOG.debug("차량 금액이 변경 되었습니다.");
+		} else {
+			LOG.debug("금액을 수정할 수 없습니다.");
+		}
+	}
+
+	public void carCompare() {
+		Scanner v = new Scanner(System.in);
+		LOG.debug("비교할 차량 번호를 입력하세요.");
+		LOG.debug("1. 차량 번호를 입력하세요.");
+
+		String carNo01 = v.nextLine();
+		LOG.debug("2. 차량 번호를 입력하세요.");
+		String carNo02 = v.nextLine();
+		List<CarVO> carList = carDao.doRetrieve(null);
+
+		for (CarVO car : carList) {
+			if (car.getCarNo().equals(carNo01)) {
+				System.out.printf("%-6s %-10s %-8s  %-8s  %-7s %-12s %-8s %-8s %-10s %-8s%n", "브랜드", "모델명", "차종", "가격", "색상",
+						"차량번호", "연료", "연식", "주행거리km", "예약여부");
+				System.out.printf("%-6s %-10s %-10s %-8d %-8s %-10s %-10s %-12d %-10d %-8s%n", car.getBrand(),
+						car.getModel(), car.getSize(), car.getPrice(), car.getColor(), car.getCarNo(), car.getFuel(),
+						car.getModelYear(), car.getDistance(), car.getReserve() ?  "예약" : "");
+
+			}
+			if (car.getCarNo().equals(carNo02)) {
+				System.out.printf("%-6s %-10s %-10s %-8d %-8s %-10s %-10s %-12d %-10d %-8s%n", car.getBrand(),
+						car.getModel(), car.getSize(), car.getPrice(), car.getColor(), car.getCarNo(), car.getFuel(),
+						car.getModelYear(), car.getDistance(), car.getReserve() ?  "예약" : "");
+
+			}
+
+		}
+		v.nextLine();
+
 	}
 
 }

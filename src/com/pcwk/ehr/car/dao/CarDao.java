@@ -33,12 +33,11 @@ import com.pcwk.ehr.member.vo.MemberVO;
 public class CarDao implements Cardiv<CarVO>, PLog {
 
 	public static final String CAR_DATA = ".\\data\\Acar.csv";
-	
+
 	public void carDao() {
-		
+
 	}
-	
-	
+
 	@Override
 	public int doSave(CarVO dto) {
 		// TODO Auto-generated method stub
@@ -58,7 +57,7 @@ public class CarDao implements Cardiv<CarVO>, PLog {
 			String line;
 
 			while ((line = carReader.readLine()) != null) {
-				// System.out.println(line);
+				// LOG.debug(line);
 				// pcwk01,이상무01,4321a,yejiad12@gmail.com,0,2025-04-18,일반 to MamberVO
 
 				String[] dataArr = line.split(",");
@@ -80,32 +79,61 @@ public class CarDao implements Cardiv<CarVO>, PLog {
 			}
 
 		} catch (FileNotFoundException e) {
-			System.out.println("FileNotFoundException:" + e.getMessage());
+			LOG.debug("FileNotFoundException:" + e.getMessage());
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.out.println("IOException:" + e.getMessage());
+			LOG.debug("IOException:" + e.getMessage());
 			e.printStackTrace();
 		} catch (Exception e) {
-			System.out.println("Exception:" + e.getMessage());
+			LOG.debug("Exception:" + e.getMessage());
 			e.printStackTrace();
 		}
 		return cars;
-	
-	}
 
+	}
+	//차량 정보 수정
 	@Override
 	public int doUpdate(List<CarVO> dto) {
-		// TODO Auto-generated method stub
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(CAR_DATA))) {
+			for (CarVO m : dto) {
+				String line = String.join(",", m.getBrand(), m.getModel(), m.getSize(), Integer.toString(m.getPrice()),
+						m.getColor(), m.getCarNo(), m.getFuel(), Integer.toString(m.getModelYear()),
+						Integer.toString(m.getDistance()), Boolean.toString(m.getReserve()));
+				writer.write(line);
+				writer.newLine();
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return 0;
+
+	}
+	//차량 정보 삭제
+	@Override
+	public int doDelete(List<CarVO> dto) {
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(CAR_DATA))) {
+			for (CarVO m : dto) {
+				String line = String.join(",", m.getBrand(), m.getModel(), m.getSize(), Integer.toString(m.getPrice()),
+						m.getColor(), m.getCarNo(), m.getFuel(), Integer.toString(m.getModelYear()),
+						Integer.toString(m.getDistance()), Boolean.toString(m.getReserve()));
+				writer.write(line);
+				writer.newLine();
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		return 0;
 	}
 
-	@Override
-	public int doDelete(List<CarVO> dto) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	//차량 예약 취소
+	// 차량 예약 취소
 	public boolean carReserveCancel(List<CarVO> dto) {
 		boolean flag = false;
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(CAR_DATA))) {
@@ -125,9 +153,8 @@ public class CarDao implements Cardiv<CarVO>, PLog {
 
 		return flag;
 	}
-	
-	
-	//차량 예약
+
+	// 차량 예약
 	public boolean reserve(List<CarVO> dto) {
 		boolean flag = false;
 
@@ -149,8 +176,5 @@ public class CarDao implements Cardiv<CarVO>, PLog {
 		return flag;
 
 	}
-	
-	
-	
 
 }

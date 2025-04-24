@@ -45,7 +45,7 @@ public class MemberDao implements Cardiv<MemberVO>, PLog {
 			}
 		}
 
-		System.out.println("로그인 실패! ID 또는 비밀번호를 확인하세요.");
+		LOG.debug("로그인 실패! ID 또는 비밀번호를 확인하세요.");
 		return null;
 	}
 
