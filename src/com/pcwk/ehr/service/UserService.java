@@ -13,12 +13,10 @@
  */
 package com.pcwk.ehr.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import com.pcwk.ehr.car.dao.CarDao;
-import com.pcwk.ehr.car.vo.CarVO;
 import com.pcwk.ehr.car.vo.CarVO;
 
 public class UserService {
@@ -42,7 +40,7 @@ public class UserService {
 			System.out.println("║  4. 회원 삭제                           	 ║");
 			System.out.println("║  5. 로그아웃 / 이전 메뉴                  	 ║");
 			System.out.println("╚════════════════════════════════════════╝");
-			
+
 			try {
 				int select = Integer.parseInt(s.nextLine());
 
@@ -67,17 +65,17 @@ public class UserService {
 				default:
 					System.out.println("잘못된 입력입니다. 다시 선택해주세요.");
 				}
-			} catch(NumberFormatException e) {
+			} catch (NumberFormatException e) {
 				e.printStackTrace();
 				System.out.println("잘못된 입력입니다. 숫자만 입력 해주세요.");
 			}
-			
+
 		}
 
 	}
-	
+
 	public void checkMenu() {
-		while(true) {
+		while (true) {
 			System.out.println("╔════════════════════════════════════════╗");
 			System.out.println("║         조회 메뉴 (User Mode)   	         ║");
 			System.out.println("╠════════════════════════════════════════╣");
@@ -86,40 +84,49 @@ public class UserService {
 			System.out.println("║  3. 차종별 조회                         	 ║");
 			System.out.println("║  4. 이전 메뉴                        	 ║");
 			System.out.println("╚════════════════════════════════════════╝");
-			
+
 			try {
 				int select = Integer.parseInt(s.nextLine());
 
 				switch (select) {
 				case 1:
-					String brand ="";
-					
+					String brand = "";
+
 					System.out.println("조회할 브랜드를 입력해 주세요");
 					brand = s.nextLine();
-					
+
 					brandCheck(brand);
 					break;
 				case 2:
-					System.out.println("가격");
+					int price = 0;
+
+					System.out.println("조회할 가격대를 입력해 주세요.");
+					price = Integer.parseInt(s.nextLine());
+
+					priceCheck(price);
 					break;
 				case 3:
-					System.out.println("차종");
+					String shape = "";
+
+					System.out.println("조회할 차종을 입력해 주세요. \n small, medium, Large");
+					shape = s.nextLine();
+
+					shapeCheck(shape);
 					break;
 				case 4:
 					return;
 				default:
 					System.out.println("잘못된 입력입니다. 다시 선택해주세요.");
 				}
-			} catch(NumberFormatException e) {
+			} catch (NumberFormatException e) {
 				e.printStackTrace();
 				System.out.println("잘못된 입력입니다. 숫자만 입력 해주세요.");
 			}
 		}
-		
-		
+
 	}
-	
-	//차량 예약
+
+	// 차량 예약
 	public void carReserve() {
 		Scanner sc = new Scanner(System.in);
 
@@ -174,59 +181,50 @@ public class UserService {
 				"----------------------------------------------------------------------------------------------------");
 		for (CarVO car : carList) {
 			if (car.getBrand().equalsIgnoreCase(brand)) {
-				
+
 				System.out.printf("%-8s %-10s %-10s %-8d %-8s %-10s %-10s %-8d %-10d %-8b%n", car.getBrand(),
 						car.getModel(), car.getSize(), car.getPrice(), car.getColor(), car.getCarNo(), car.getFuel(),
 						car.getModelYear(), car.getDistance(), car.getReserve());
-				
+
 			}
 		}
 
-		
 	}
 
 	// 3. 가격대별 차량 조회
 	public void priceCheck(int maxPrice) {
 		List<CarVO> carList = carDao.doRetrieve(null);
-		for (CarVO car : carList) {
-			if (car.getPrice() <= maxPrice) {
-				carList.add(car);
-			}
-		}
-
 		System.out.println("💰 " + maxPrice + "만원 이하 차량 목록:");
 		System.out.printf("%-6s %-10s %-8s %-6s %-8s %-10s %-8s %-8s %-8s %-8s%n", "브랜드", "모델명", "차종", "가격", "색상",
 				"차량번호", "연료", "연식", "주행거리", "예약여부");
 		System.out.println(
 				"----------------------------------------------------------------------------------------------------");
-
 		for (CarVO car : carList) {
-			System.out.printf("%-8s %-10s %-10s %-8d %-8s %-10s %-10s %-8d %-10d %-8b%n", car.getBrand(),
-					car.getModel(), car.getSize(), car.getPrice(), car.getColor(), car.getCarNo(), car.getFuel(),
-					car.getModelYear(), car.getDistance(), car.getReserve());
+			if (car.getPrice() <= maxPrice) {
+				System.out.printf("%-8s %-10s %-10s %-8d %-8s %-10s %-10s %-8d %-10d %-8b%n", car.getBrand(),
+						car.getModel(), car.getSize(), car.getPrice(), car.getColor(), car.getCarNo(), car.getFuel(),
+						car.getModelYear(), car.getDistance(), car.getReserve());
+			}
 		}
+
 	}
 
 	// 4. 차종(사이즈)별 차량 조회
 	public void shapeCheck(String size) {
 		List<CarVO> carList = carDao.doRetrieve(null);
-		for (CarVO car : carList) {
-			if (car.getSize().equalsIgnoreCase(size)) {
-				carList.add(car);
-			}
-		}
-
 		System.out.println("🚙 차종 [" + size + "] 차량 목록:");
 		System.out.printf("%-6s %-10s %-8s %-6s %-8s %-10s %-8s %-8s %-8s %-8s%n", "브랜드", "모델명", "차종", "가격", "색상",
 				"차량번호", "연료", "연식", "주행거리", "예약여부");
 		System.out.println(
 				"----------------------------------------------------------------------------------------------------");
-
 		for (CarVO car : carList) {
-			System.out.printf("%-8s %-7s %-9s %-8d %-8s %-10s %-10s %-11d %-8d %-8b%n", car.getBrand(),
-					car.getModel(), car.getSize(), car.getPrice(), car.getColor(), car.getCarNo(), car.getFuel(),
-					car.getModelYear(), car.getDistance(), car.getReserve());
+			if (car.getSize().equalsIgnoreCase(size)) {
+				System.out.printf("%-8s %-7s %-9s %-8d %-8s %-10s %-10s %-11d %-8d %-8b%n", car.getBrand(),
+						car.getModel(), car.getSize(), car.getPrice(), car.getColor(), car.getCarNo(), car.getFuel(),
+						car.getModelYear(), car.getDistance(), car.getReserve());
+			}
 		}
+
 	}
 
 }
