@@ -24,6 +24,7 @@ import com.pcwk.ehr.car.vo.CarVO;
 
 public class UserService {
 	private LoginService loginService;
+	
 	CarDao carDao = new CarDao();
 	Logger LOG = LogManager.getLogger();
 
@@ -41,8 +42,7 @@ public class UserService {
 			LOG.debug("║  1. 차량 조회                         	 ║");
 			LOG.debug("║  2. 차량 예약                         	 ║");
 			LOG.debug("║  3. 차량 비교                         	 ║");
-			LOG.debug("║  4. 회원 삭제                           	 ║");
-			LOG.debug("║  5. 로그아웃 / 이전 메뉴                  	 ║");
+			LOG.debug("║  4. 로그아웃 / 이전 메뉴                  	 ║");
 			LOG.debug("╚════════════════════════════════════════╝");
 
 			try {
@@ -57,12 +57,9 @@ public class UserService {
 					carReserve();
 					break;
 				case 3:
-					LOG.debug("차량 비교");
+					carCompare();	
 					break;
 				case 4:
-					LOG.debug("회원 삭제");
-					break;
-				case 5:
 					loginService.logout();
 					LOG.debug("로그 아웃하고 이전 메뉴로 돌아갑니다.");
 					return;
@@ -228,6 +225,36 @@ public class UserService {
 						car.getModelYear(), car.getDistance(), car.getReserve());
 			}
 		}
+
+	}
+	public void carCompare() {
+		Scanner v = new Scanner(System.in);
+		LOG.debug("비교할 차량 번호를 입력하세요.");
+		LOG.debug("1. 차량 번호를 입력하세요.");
+
+		String carNo01 = v.nextLine();
+		LOG.debug("2. 차량 번호를 입력하세요.");
+		String carNo02 = v.nextLine();
+		List<CarVO> carList = carDao.doRetrieve(null);
+
+		for (CarVO car : carList) {
+			if (car.getCarNo().equals(carNo01)) {
+				System.out.printf("%-6s %-10s %-8s  %-8s  %-7s %-12s %-8s %-8s %-10s %-8s%n", "브랜드", "모델명", "차종", "가격", "색상",
+						"차량번호", "연료", "연식", "주행거리km", "예약여부");
+				System.out.printf("%-6s %-10s %-10s %-8d %-8s %-10s %-10s %-12d %-10d %-8s%n", car.getBrand(),
+						car.getModel(), car.getSize(), car.getPrice(), car.getColor(), car.getCarNo(), car.getFuel(),
+						car.getModelYear(), car.getDistance(), car.getReserve() ?  "예약" : "");
+
+			}
+			if (car.getCarNo().equals(carNo02)) {
+				System.out.printf("%-6s %-10s %-10s %-8d %-8s %-10s %-10s %-12d %-10d %-8s%n", car.getBrand(),
+						car.getModel(), car.getSize(), car.getPrice(), car.getColor(), car.getCarNo(), car.getFuel(),
+						car.getModelYear(), car.getDistance(), car.getReserve() ?  "예약" : "");
+
+			}
+
+		}
+		v.nextLine();
 
 	}
 
