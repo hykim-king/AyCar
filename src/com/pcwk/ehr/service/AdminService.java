@@ -59,7 +59,6 @@ public class AdminService {
 					LOG.debug("잘못된 입력입니다. 다시 선택해주세요.");
 				}
 			} catch (NumberFormatException e) {
-				e.printStackTrace();
 				LOG.debug("잘못된 입력입니다. 숫자만 입력 해주세요.");
 			}
 
@@ -127,7 +126,6 @@ public class AdminService {
 					LOG.debug("잘못된 입력입니다. 다시 선택해주세요.");
 				}
 			} catch (NumberFormatException e) {
-				e.printStackTrace();
 				LOG.debug("잘못된 입력입니다. 숫자만 입력 해주세요.");
 			}
 		}
@@ -231,7 +229,7 @@ public class AdminService {
 	// 1. 전체 차량 출력
 	public void carCheck() {
 		LOG.debug("📋 전체 차량 목록:");
-		System.out.printf("%-6s %-13s %-8s %-8s %-8s %-12s %-8s %-8s %-10s %-8s%n", "브랜드", "모델명", "차종", "가격", "색상",
+		System.out.printf("%-8s %-11s %-8s %-8s %-7s %-12s %-7s %-8s %-10s %-8s%n", "브랜드", "모델명", "차종", "가격", "색상",
 				"차량번호", "연료", "연식", "주행거리", "예약여부");
 		LOG.debug(
 				"-------------------------------------------------------------------------------------------------------");
@@ -249,7 +247,7 @@ public class AdminService {
 	// 예약 차량 조회
 	public void carReserveCheck() {
 		List<CarVO> carList = carDao.doRetrieve(null);
-		System.out.printf("%-6s %-13s %-8s %-8s %-8s %-12s %-8s %-8s %-10s %-8s%n", "브랜드", "모델명", "차종", "가격", "색상",
+		System.out.printf("%-8s %-11s %-8s %-8s %-7s %-12s %-7s %-8s %-10s %-8s%n", "브랜드", "모델명", "차종", "가격", "색상",
 				"차량번호", "연료", "연식", "주행거리", "예약여부");
 		for (CarVO car : carList) {
 			if (car.getReserve() == true) {

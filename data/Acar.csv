@@ -1,19 +1,19 @@
-현대,아반떼,Small,6000,White,1111,Gasoline,2010,5,false
+현대,아반떼,Small,6000,White,1111,Gasoline,2010,5,true
 현대,산타페,Medium,1500,Gray,1112,Diesel,2010,2,false
 현대,스타렉스,Large,2500,Gray,1113,Diesel,2015,2,false
 현대,그랜져,Medium,3500,White,1114,Gasoline,2015,5,false
 현대,제네시스,Large,4500,Black,1115,Gasoline,2025,8,false
 기아,모닝,Small,500,Gray,1116,Diesel,2010,2,false
-기아,소렌토,Medium,1500,Gray,1117,Diesel,2015,8,false
+기아,소렌토,Medium,1500,Gray,1117,Diesel,2015,8,true
 기아,k5,Medium,2500,White,1118,Gasoline,2025,8,false
 기아,카니발,Large,3500,White,1119,Gasoline,2015,2,false
 기아,k9,Large,4500,Black,1120,Gasoline,2025,5,false
 BMW,X1,Small,1500,White,1122,Diesel,2015,2,false
 BMW,X5,Medium,2500,Gray,1123,Diesel,2025,2,false
-BMW,5시리즈,Medium,3500,Black,1124,Gasoline,2010,8,false
+BMW,5시리즈,Medium,3500,Black,1124,Gasoline,2010,8,true
 BMW,7시리즈,Large,4500,White,1125,Gasoline,2025,5,false
 BENZ,C-클래스,Small,500,White,1126,Gasoline,2025,2,false
-BENZ,E-클래스,Medium,1500,Black,1127,Gasoline,2010,8,false
+BENZ,E-클래스,Medium,1500,Black,1127,Gasoline,2010,8,true
 BENZ,GLE 클래스,Medium,2500,Gray,1128,Diesel,2025,8,false
 BENZ,GLC 클래스,Medium,3500,White,1129,Diesel,2015,5,false
 BENZ,스프린터,Large,4500,White,1130,Diesel,2010,5,false

@@ -51,9 +51,18 @@ public class MemberDao implements Cardiv<MemberVO>, PLog {
 
 	// 회원가입
 	public int signUp(MemberVO input) {
-		int result = doSave(input); // 회원 등록
+		List<MemberVO> members = doRetrieve(null);
 
-		return result;
+		// 1. 중복 체크
+		for (MemberVO m : members) {
+			if (m.getId().equals(input.getId())) {
+				System.out.println("이미 존재하는 ID입니다. 다른 ID를 사용해주세요.");
+				return 0;
+			}
+		}
+
+		// 2. 중복 아니면 저장
+		return doSave(input);
 	}
 
 	// 파일에서 회원정보 읽기

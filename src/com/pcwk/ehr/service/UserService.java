@@ -67,7 +67,6 @@ public class UserService {
 					LOG.debug("잘못된 입력입니다. 다시 선택해주세요.");
 				}
 			} catch (NumberFormatException e) {
-				e.printStackTrace();
 				LOG.debug("잘못된 입력입니다. 숫자만 입력 해주세요.");
 			}
 
@@ -120,7 +119,6 @@ public class UserService {
 					LOG.debug("잘못된 입력입니다. 다시 선택해주세요.");
 				}
 			} catch (NumberFormatException e) {
-				e.printStackTrace();
 				LOG.debug("잘못된 입력입니다. 숫자만 입력 해주세요.");
 			}
 		}
@@ -159,7 +157,7 @@ public class UserService {
 	// 1. 전체 차량 출력
 	public void carCheck() {
 		LOG.debug("📋 전체 차량 목록:");
-		System.out.printf("%-6s %-13s %-8s %-8s %-8s %-12s %-8s %-8s %-10s %-8s%n", "브랜드", "모델명", "차종", "가격", "색상",
+		System.out.printf("%-8s %-11s %-8s %-8s %-7s %-12s %-7s %-8s %-10s %-8s%n", "브랜드", "모델명", "차종", "가격", "색상",
 				"차량번호", "연료", "연식", "주행거리", "예약여부");
 		LOG.debug(
 				"-------------------------------------------------------------------------------------------------------");
@@ -176,7 +174,7 @@ public class UserService {
 	public void brandCheck(String brand) {
 		List<CarVO> carList = carDao.doRetrieve(null);
 		LOG.debug("🚗 제조사 [" + brand + "] 차량 목록:");
-		System.out.printf("%-6s %-10s %-8s %-6s %-8s %-10s %-8s %-8s %-8s %-8s%n", "브랜드", "모델명", "차종", "가격", "색상",
+		System.out.printf("%-8s %-11s %-8s %-8s %-7s %-10s %-8s %-6s %-10s %-8s%n", "브랜드", "모델명", "차종", "가격", "색상",
 				"차량번호", "연료", "연식", "주행거리", "예약여부");
 		LOG.debug(
 				"----------------------------------------------------------------------------------------------------");
@@ -196,7 +194,7 @@ public class UserService {
 	public void priceCheck(int maxPrice) {
 		List<CarVO> carList = carDao.doRetrieve(null);
 		LOG.debug("💰 " + maxPrice + "만원 이하 차량 목록:");
-		System.out.printf("%-6s %-10s %-8s %-6s %-8s %-10s %-8s %-8s %-8s %-8s%n", "브랜드", "모델명", "차종", "가격", "색상",
+		System.out.printf("%-8s %-11s %-8s %-8s %-7s %-10s %-8s %-6s %-10s %-8s%n", "브랜드", "모델명", "차종", "가격", "색상",
 				"차량번호", "연료", "연식", "주행거리", "예약여부");
 		LOG.debug(
 				"----------------------------------------------------------------------------------------------------");
@@ -214,7 +212,7 @@ public class UserService {
 	public void shapeCheck(String size) {
 		List<CarVO> carList = carDao.doRetrieve(null);
 		LOG.debug("🚙 차종 [" + size + "] 차량 목록:");
-		System.out.printf("%-6s %-10s %-8s %-6s %-8s %-10s %-8s %-8s %-8s %-8s%n", "브랜드", "모델명", "차종", "가격", "색상",
+		System.out.printf("%-8s %-8s %-8s %-7s %-6s %-10s %-8s %-7s %-11s %-8s%n", "브랜드", "모델명", "차종", "가격", "색상",
 				"차량번호", "연료", "연식", "주행거리", "예약여부");
 		LOG.debug(
 				"----------------------------------------------------------------------------------------------------");
@@ -239,7 +237,7 @@ public class UserService {
 
 		for (CarVO car : carList) {
 			if (car.getCarNo().equals(carNo01)) {
-				System.out.printf("%-6s %-10s %-8s  %-8s  %-7s %-12s %-8s %-8s %-10s %-8s%n", "브랜드", "모델명", "차종", "가격", "색상",
+				System.out.printf("%-8s %-11s %-8s %-8s %-7s %-12s %-7s %-8s %-10s %-8s%n", "브랜드", "모델명", "차종", "가격", "색상",
 						"차량번호", "연료", "연식", "주행거리km", "예약여부");
 				System.out.printf("%-6s %-10s %-10s %-8d %-8s %-10s %-10s %-12d %-10d %-8s%n", car.getBrand(),
 						car.getModel(), car.getSize(), car.getPrice(), car.getColor(), car.getCarNo(), car.getFuel(),

@@ -78,7 +78,6 @@ public class LoginService {
 					LOG.debug("잘못된 입력입니다. 다시 입력 해주세요");
 				}
 			} catch (NumberFormatException e) {
-				e.printStackTrace();
 				LOG.debug("잘못된 입력입니다. 숫자만 입력 해주세요.");
 			}
 		}
