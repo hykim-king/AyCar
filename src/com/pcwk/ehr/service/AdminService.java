@@ -79,11 +79,12 @@ public class AdminService {
 			LOG.debug("║  2. 회원 단건 조회                    	 ║");
 			LOG.debug("║  3. 회원 수정                         	 ║");
 			LOG.debug("║  4. 회원 삭제                           	 ║");
-			LOG.debug("║  5. 예약 차량 조회                    	 ║");
-			LOG.debug("║  6. 차량 예약 취소                    	 ║");
-			LOG.debug("║  7. 차량 정보 수정                        	 ║");
-			LOG.debug("║  8. 차량 정보 삭제                        	 ║");
-			LOG.debug("║  9. 로그아웃 / 이전 메뉴                  	 ║");
+			LOG.debug("║  5. 전체 차량 조회                    	 ║");
+			LOG.debug("║  6. 예약 차량 조회                    	 ║");
+			LOG.debug("║  7. 차량 예약 취소                    	 ║");
+			LOG.debug("║  8. 차량 정보 수정                        	 ║");
+			LOG.debug("║  9. 차량 정보 삭제                        	 ║");
+			LOG.debug("║  10. 로그아웃 / 이전 메뉴                  	 ║");
 			LOG.debug("╚════════════════════════════════════════╝");
 			LOG.debug("▶ 번호를 선택하세요: ");
 
@@ -104,18 +105,21 @@ public class AdminService {
 					deleteMember();
 					break;
 				case 5:
-					carReserveCheck();
+					carCheck();
 					break;
 				case 6:
-					carReserveCancel();
+					carReserveCheck();
 					break;
 				case 7:
-					carUpdate();
+					carReserveCancel();
 					break;
 				case 8:
-					carDelete();
+					carUpdate();
 					break;
 				case 9:
+					carDelete();
+					break;
+				case 10:
 					loginService.logout();
 					LOG.debug("로그 아웃하고 이전 메뉴로 돌아갑니다.");
 					return;
@@ -224,6 +228,22 @@ public class AdminService {
 			LOG.debug("회원 삭제를 실패했습니다.");
 		}
 	}
+	// 1. 전체 차량 출력
+	public void carCheck() {
+		LOG.debug("📋 전체 차량 목록:");
+		System.out.printf("%-6s %-13s %-8s %-8s %-8s %-12s %-8s %-8s %-10s %-8s%n", "브랜드", "모델명", "차종", "가격", "색상",
+				"차량번호", "연료", "연식", "주행거리", "예약여부");
+		LOG.debug(
+				"-------------------------------------------------------------------------------------------------------");
+		List<CarVO> carList = carDao.doRetrieve(null);
+		for (CarVO car : carList) {
+			String reserveStatus = car.getReserve() ? "예약" : "";
+			System.out.printf("%-8s %-10s %-10s %-8d %-8s %-10s %-10s %-12d %-10d %-8s%n", car.getBrand(),
+					car.getModel(), car.getSize(), car.getPrice(), car.getColor(), car.getCarNo(), car.getFuel(),
+					car.getModelYear(), car.getDistance(), car.getReserve());
+		}
+	}
+	
 
 	// 예약 차량 조회
 	public void carReserveCheck() {
