@@ -162,6 +162,7 @@ public class AdminService {
 		if (foundMember != null) {
 			LOG.debug("===== 회원 정보 =====");
 			LOG.debug("ID: " + foundMember.getId());
+			LOG.debug("PW: " + foundMember.getPw());
 			LOG.debug("이름: " + foundMember.getName());
 			LOG.debug("권한: " + foundMember.getRole());
 		} else {
