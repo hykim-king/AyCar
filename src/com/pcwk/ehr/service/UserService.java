@@ -166,7 +166,7 @@ public class UserService {
 			String reserveStatus = car.getReserve() ? "예약" : "";
 			System.out.printf("%-8s %-10s %-10s %-8d %-8s %-10s %-10s %-12d %-10d %-8s%n", car.getBrand(),
 					car.getModel(), car.getSize(), car.getPrice(), car.getColor(), car.getCarNo(), car.getFuel(),
-					car.getModelYear(), car.getDistance(), car.getReserve());
+					car.getModelYear(), car.getDistance(), car.getReserve()?"예약" : "");
 		}
 	}
 
@@ -181,9 +181,9 @@ public class UserService {
 		for (CarVO car : carList) {
 			if (car.getBrand().equalsIgnoreCase(brand)) {
 
-				System.out.printf("%-8s %-10s %-10s %-8d %-8s %-10s %-10s %-8d %-10d %-8b%n", car.getBrand(),
+				System.out.printf("%-8s %-10s %-10s %-8d %-8s %-10s %-10s %-8d %-10d %-8s%n", car.getBrand(),
 						car.getModel(), car.getSize(), car.getPrice(), car.getColor(), car.getCarNo(), car.getFuel(),
-						car.getModelYear(), car.getDistance(), car.getReserve());
+						car.getModelYear(), car.getDistance(), car.getReserve()?"예약" : "");
 
 			}
 		}
@@ -200,9 +200,9 @@ public class UserService {
 				"----------------------------------------------------------------------------------------------------");
 		for (CarVO car : carList) {
 			if (car.getPrice() <= maxPrice) {
-				System.out.printf("%-8s %-10s %-10s %-8d %-8s %-10s %-10s %-8d %-10d %-8b%n", car.getBrand(),
+				System.out.printf("%-8s %-10s %-10s %-8d %-8s %-10s %-10s %-8d %-10d %-8s%n", car.getBrand(),
 						car.getModel(), car.getSize(), car.getPrice(), car.getColor(), car.getCarNo(), car.getFuel(),
-						car.getModelYear(), car.getDistance(), car.getReserve());
+						car.getModelYear(), car.getDistance(), car.getReserve()?"예약" : "");
 			}
 		}
 
@@ -218,9 +218,9 @@ public class UserService {
 				"----------------------------------------------------------------------------------------------------");
 		for (CarVO car : carList) {
 			if (car.getSize().equalsIgnoreCase(size)) {
-				System.out.printf("%-8s %-7s %-9s %-8d %-8s %-10s %-10s %-11d %-8d %-8b%n", car.getBrand(),
+				System.out.printf("%-8s %-7s %-9s %-8d %-8s %-10s %-10s %-11d %-8d %-8s%n", car.getBrand(),
 						car.getModel(), car.getSize(), car.getPrice(), car.getColor(), car.getCarNo(), car.getFuel(),
-						car.getModelYear(), car.getDistance(), car.getReserve());
+						car.getModelYear(), car.getDistance(), car.getReserve()?"예약" : "");
 			}
 		}
 
